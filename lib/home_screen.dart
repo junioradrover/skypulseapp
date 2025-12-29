@@ -191,75 +191,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 16),
 
-                  // Configuración de pines
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Configuración',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  bluetooth.showPins();
-                                  _addLog('→ PIN:SHOW');
-                                },
-                                icon: const Icon(Icons.info_outline, size: 18),
-                                label: const Text('Ver Pines'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.grey[700],
-                                ),
-                              ),
-                              ElevatedButton.icon(
-                                onPressed: () =>
-                                    _showPinDialog(bluetooth, true),
-                                icon: const Icon(Icons.input, size: 18),
-                                label: const Text('Set RX'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.grey[700],
-                                ),
-                              ),
-                              ElevatedButton.icon(
-                                onPressed: () =>
-                                    _showPinDialog(bluetooth, false),
-                                icon: const Icon(Icons.output, size: 18),
-                                label: const Text('Set TX'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.grey[700],
-                                ),
-                              ),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  bluetooth.showStatus();
-                                  _addLog('→ STATUS');
-                                },
-                                icon: const Icon(Icons.analytics_outlined,
-                                    size: 18),
-                                label: const Text('Estado'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.grey[700],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
                   // Logs de debug
                   _buildLogsCard(),
                 ] else ...[
@@ -593,47 +524,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showPinDialog(BluetoothService bluetooth, bool isRx) {
-    final controller = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Configurar pin ${isRx ? "RX" : "TX"}'),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            labelText: 'Número de pin',
-            hintText: 'Ej: 16, 17',
-            border: OutlineInputBorder(),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final pin = int.tryParse(controller.text);
-              if (pin != null) {
-                if (isRx) {
-                  bluetooth.setRxPin(pin);
-                  _addLog('→ PIN:RX=$pin');
-                } else {
-                  bluetooth.setTxPin(pin);
-                  _addLog('→ PIN:TX=$pin');
-                }
-              }
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
           ),
         ],
       ),
